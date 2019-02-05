@@ -1,11 +1,16 @@
 ## ATTOM analyzer
 
 ### You can analysis raw data via simple command
+
+#### Create RunNo. file
+#### raw binary file to .txt file
+#### Compile .txt to Excel format
+#### Create .png file from .txt file
 ```shell
-%python attom_compile.py
+%python analyzer.py
 ```
 
-### You can expand format.py to make your biological simulation model
+### Plese select the command in analyzer.py
 ```shell
 attom = attom()
 attom.run_no()

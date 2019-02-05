@@ -1,11 +1,7 @@
 ## ATTOM analyzer
 
 ### You can analysis raw data via simple command
-
-#### Create RunNo. file
-#### raw binary file to .txt file
-#### Compile .txt to Excel format
-#### Create .png file from .txt file
+#### Copy analyzer.py to the raw data directory & run command
 ```shell
 %python analyzer.py
 ```
@@ -18,3 +14,7 @@ attom.binary2txt()
 attom.txt2xls()
 attom.txt2png()
 ```
+#### Create RunNo. file
+#### raw binary file to .txt file
+#### Compile .txt to Excel format
+#### Create .png file from .txt file

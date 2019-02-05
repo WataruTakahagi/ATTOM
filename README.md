@@ -1,12 +1,13 @@
 ## ATTOM analyzer
 
 ### You can analysis raw data via simple command
-#### Copy analyzer.py to the raw data directory & run command
+### Copy analyzer.py to the raw data directory & run command
 ```shell
 %python analyzer.py
 ```
 
 ### RunNo.csv will be created after running analyzer.py
+#### Run No., Sample Name
 ```shell
 16697,Elix
 16698,Elix

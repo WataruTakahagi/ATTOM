@@ -9,36 +9,36 @@
 ### RunNo.csv will be created after running analyzer.py
 #### Run No., Sample Name
 ```shell
-16697,Elix
-16698,Elix
+16697,Blank
+16698,Blank
 16699,1ppt
 16700,1ppt
 16701,1ppt
 16702,1ppt
 16703,1ppt
-16704,Elix
-16705,Elix
+16704,Blank
+16705,Blank
 16706,10ppt
 16707,10ppt
 16708,10ppt
 16709,10ppt
 16710,10ppt
-16711,Elix
-16712,Elix
+16711,Blank
+16712,Blank
 16713,100ppt
 16714,100ppt
 16715,100ppt
 16716,100ppt
 16717,100ppt
-16718,Elix
-16719,Elix
+16718,Blank
+16719,Blank
 16720,1ppb
 16721,1ppb
 16722,1ppb
 16723,1ppb
 16724,1ppb
-16725,Elix
-16726Elix
+16725,Blank
+16726,Blank
 ```
 ### Plese select the command in analyzer.py
 ```shell

@@ -7,38 +7,39 @@
 ```
 
 ### RunNo.csv will be created after running analyzer.py
-#### Run No., Sample Name
+#### Run No., ID, Sample Name
 ```shell
-16697,Blank
-16698,Blank
-16699,1ppt
-16700,1ppt
-16701,1ppt
-16702,1ppt
-16703,1ppt
-16704,Blank
-16705,Blank
-16706,10ppt
-16707,10ppt
-16708,10ppt
-16709,10ppt
-16710,10ppt
-16711,Blank
-16712,Blank
-16713,100ppt
-16714,100ppt
-16715,100ppt
-16716,100ppt
-16717,100ppt
-16718,Blank
-16719,Blank
-16720,1ppb
-16721,1ppb
-16722,1ppb
-16723,1ppb
-16724,1ppb
-16725,Blank
-16726,Blank
+Run No.,ID,Name
+16697,blank,Elix
+16698,blank,Elix
+16699,sample,1ppt
+16700,sample,1ppt
+16701,sample,1ppt
+16702,sample,1ppt
+16703,sample,1ppt
+16704,blank,Elix
+16705,blank,Elix
+16706,sample,10ppt
+16707,sample,10ppt
+16708,sample,10ppt
+16709,sample,10ppt
+16710,sample,10ppt
+16711,blank,Elix
+16712,blank,Elix
+16713,sample,100ppt
+16714,sample,100ppt
+16715,sample,100ppt
+16716,sample,100ppt
+16717,sample,100ppt
+16718,blank,Elix
+16719,blank,Elix
+16720,sample,1ppb
+16721,sample,1ppb
+16722,sample,1ppb
+16723,sample,1ppb
+16724,sample,1ppb
+16725,blank,Elix
+16726,blank,Elix
 ```
 ### Plese select the command in analyzer.py
 ```shell

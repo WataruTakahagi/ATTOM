@@ -1,10 +1,11 @@
 
-import glob
 import matplotlib.pyplot as plt
 import os
 import numpy as np
 import csv
 import sys
+import datetime
+
 try: import xlrd
 except ModuleNotFoundError:
     print('xlrd module was not found.')
@@ -57,6 +58,7 @@ class attom:
             data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i]
             if 'data' in data_list:del data_list[data_list.index('data')]
             if 'figure' in data_list:del data_list[data_list.index('figure')]
+            if 'archive' in data_list:del data_list[data_list.index('archive')]
             data_list = sorted(data_list)
             for i in data_list:
                 id = input(i+' : ')
@@ -71,6 +73,7 @@ class attom:
         data_list = sorted(data_list)
         if 'data' in data_list:del data_list[data_list.index('data')]
         if 'figure' in data_list:del data_list[data_list.index('figure')]
+        if 'archive' in data_list:del data_list[data_list.index('archive')]
         for fname in data_list:
             fi = open(fname,'r').readlines()
             fo = open(fname+'.txt','w')
@@ -143,8 +146,40 @@ class attom:
         plt.savefig(name+'.png')
         plt.close()
 
+    def analysis(self):
+        f,sample_id,blank = open('RunNo.csv').readlines(),[],str()
+        for i in f:print('Run No. =',pycolor.GREEN+i.rstrip().split(',')[0]+pycolor.END,'/ Sample name =',pycolor.GREEN+i.rstrip().split(',')[1]+pycolor.END)
+        judge = input('Correct '+pycolor.GREEN+'Run No. '+pycolor.END+'&'+pycolor.GREEN+' Sample Name '+pycolor.END+'? '+pycolor.BLUE+'(y/n) '+pycolor.END)
+        analysis_file_name = str(datetime.datetime.today()).split('.')[0].replace('-','').replace(' ','-').replace(':','')+'.anl'
+        f_o = open(analysis_file_name,'w')
+        if judge == 'y':
+            b_num,frag = 1,0
+            for i in f:
+                if len(blank) == 0:blank = i.split(',')[1]
+                if i.split(',')[1] == blank:
+                    print(i.rstrip(),'b'+str(b_num))
+                else:
+                    s_num = b_num
+                    print(i.rstrip(),'s'+str(s_num))
+        else:
+            print('Please edit RunNo.csv !')
+            sys.exit()
+        f_o.close()
+        filepath = os.getcwd()+'/archive'
+        if os.path.exists(filepath) == False:os.system('mkdir archive')
+        os.system('mv *.anl archive')
+        print(pycolor.REVERCE+pycolor.BLUE+analysis_file_name+pycolor.REVERCE+pycolor.END)
+
+    def clean(self):
+        os.system('rm -r data')
+        os.system('rm -r archive')
+        os.system('rm -r figure')
+        os.system('rm *.xls')
+
 attom = attom()
 attom.run_no()
 attom.binary2txt()
 attom.txt2xls()
-#attom.txt2png()
+attom.txt2png()
+attom.analysis()
+#attom.clean()

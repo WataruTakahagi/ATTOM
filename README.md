@@ -49,7 +49,7 @@ attom.binary2txt()
 attom.txt2xls()
 attom.txt2png()
 attom.analysis()
-#attom.clean() #all clean
+#attom.clean() #clean all analysis file & directory
 ```
 #### Create RunNo. file
 #### raw binary file to .txt file

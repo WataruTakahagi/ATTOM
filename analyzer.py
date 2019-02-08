@@ -55,21 +55,25 @@ class attom:
         else:
             run_no = open('RunNo.csv','w')
             print('Please input Run No.')
-            data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i]
+            data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i and not '.anl' in i]
             if 'data' in data_list:del data_list[data_list.index('data')]
             if 'figure' in data_list:del data_list[data_list.index('figure')]
             if 'archive' in data_list:del data_list[data_list.index('archive')]
             data_list = sorted(data_list)
             for i in data_list:
-                id = input(i+' : ')
-                run_no.write(','.join([i,id+'\n']))
+                id = input(pycolor.BLUE+i+pycolor.END+' : ')
+                idl = input('sample type (blank : b, sample, s) : ')
+                if idl == 'b':idl = 'blank'
+                elif idl == 's':idl = 'sample'
+                else: idl = 'skip'
+                run_no.write(','.join([i,idl,id+'\n']))
             run_no.close()
-            print('RunNo.csv > .')
+            print(pycolor.REVERCE+pycolor.BLUE+'RunNo.csv'+pycolor.REVERCE+pycolor.END)
             run_no = open('RunNo.csv','r')
 
     def binary2txt(self):
         jobid = 1
-        data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i]
+        data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i and not '.anl' in i]
         data_list = sorted(data_list)
         if 'data' in data_list:del data_list[data_list.index('data')]
         if 'figure' in data_list:del data_list[data_list.index('figure')]
@@ -148,7 +152,7 @@ class attom:
 
     def analysis(self):
         f,sample_id,blank = open('RunNo.csv').readlines(),[],str()
-        for i in f:print('Run No. =',pycolor.GREEN+i.rstrip().split(',')[0]+pycolor.END,'/ Sample name =',pycolor.GREEN+i.rstrip().split(',')[1]+pycolor.END)
+        for i in f:print('Run No. =',pycolor.GREEN+i.rstrip().split(',')[0]+pycolor.END,'/ Sample ID =',pycolor.GREEN+i.rstrip().split(',')[1]+pycolor.END,'/ Sample name =',pycolor.GREEN+i.rstrip().split(',')[2]+pycolor.END)
         judge = input('Correct '+pycolor.GREEN+'Run No. '+pycolor.END+'&'+pycolor.GREEN+' Sample Name '+pycolor.END+'? '+pycolor.BLUE+'(y/n) '+pycolor.END)
         analysis_file_name = str(datetime.datetime.today()).split('.')[0].replace('-','').replace(' ','-').replace(':','')+'.anl'
         f_o = open(analysis_file_name,'w')
@@ -163,6 +167,8 @@ class attom:
                     print(i.rstrip(),'s'+str(s_num))
         else:
             print('Please edit RunNo.csv !')
+            os.system('open RunNo.csv')
+            os.system('rm *.anl')
             sys.exit()
         f_o.close()
         filepath = os.getcwd()+'/archive'

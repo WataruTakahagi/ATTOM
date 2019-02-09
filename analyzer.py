@@ -174,7 +174,7 @@ class attom:
                         print('--- Calculating '+pycolor.BLUE+'mean(sample)'+pycolor.END+' - '+pycolor.BLUE+'mean(blank)'+pycolor.END+' ---')
                         for db in list(blank_dic.keys()):
                             text = ','.join([str(logname),str(db),str((sample_dic[db] - blank_dic[db]))])
-                            print(pycolor.RED+'JOB_id = analysis '+str(jobid)+' '+pycolor.END+'Sample name =',pycolor.GREEN+str(logname)+pycolor.END,'/ Element =',pycolor.GREEN+str(db)+pycolor.END,'/ Value =',pycolor.GREEN+str((sample_dic[db] - blank_dic[db]))+pycolor.END)
+                            print(pycolor.RED+'JOB_id = analysis '+str(jobid)+' '+pycolor.END+'Sample name =',pycolor.GREEN+str(logname)+pycolor.END,'/ Element =',pycolor.GREEN+str(db)+pycolor.END,'/ cps =',pycolor.GREEN+str((sample_dic[db] - blank_dic[db]))+pycolor.END)
                             f_o.write('JOB_id = analysis '+str(jobid)+' '+text+'\n')
                             jobid += 1
                         print('--- Calculated ! -----------------------------')
@@ -229,6 +229,9 @@ class attom:
         os.system('rm -r archive')
         os.system('rm -r figure')
         os.system('rm *.xls')
+        os.system('rm *).png')
+        os.system('rm *.txt')
+        os.system('rm *.anl')
 
 attom = attom()
 attom.run_no()

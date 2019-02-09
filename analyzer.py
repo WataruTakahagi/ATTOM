@@ -54,6 +54,7 @@ class attom:
             run_no = open('RunNo.csv','r')
         else:
             run_no = open('RunNo.csv','w')
+            run_no.write(','.join(['Run No.','ID','Name'+'\n']))
             print('Please input Run No.')
             data_list = [i for i in glob.glob('*') if not '.py' in i and not '.txt' in i and not '.csv' in i and not '.xls' in i and not '.anl' in i]
             if 'data' in data_list:del data_list[data_list.index('data')]
@@ -151,20 +152,53 @@ class attom:
         plt.close()
 
     def analysis(self):
-        f,sample_id,blank = open('RunNo.csv').readlines(),[],str()
+        f,sample_id,blank = open(self.filepath).readlines(),[],str()
         for i in f:print('Run No. =',pycolor.GREEN+i.rstrip().split(',')[0]+pycolor.END,'/ Sample ID =',pycolor.GREEN+i.rstrip().split(',')[1]+pycolor.END,'/ Sample name =',pycolor.GREEN+i.rstrip().split(',')[2]+pycolor.END)
         judge = input('Correct '+pycolor.GREEN+'Run No. '+pycolor.END+'&'+pycolor.GREEN+' Sample Name '+pycolor.END+'? '+pycolor.BLUE+'(y/n) '+pycolor.END)
         analysis_file_name = str(datetime.datetime.today()).split('.')[0].replace('-','').replace(' ','-').replace(':','')+'.anl'
         f_o = open(analysis_file_name,'w')
         if judge == 'y':
-            b_num,frag = 1,0
+            #mincyc, maxcyc = int(input('Cycle minimum = ')), int(input('Cycle maximum = '))
+            lane, mincyc, maxcyc, blank_dic, sample_dic, blankcount = 0, 40, 100, {},{}, 0
             for i in f:
-                if len(blank) == 0:blank = i.split(',')[1]
-                if i.split(',')[1] == blank:
-                    print(i.rstrip(),'b'+str(b_num))
-                else:
-                    s_num = b_num
-                    print(i.rstrip(),'s'+str(s_num))
+                if i.rstrip().split(',')[1] == 'blank':
+                    if lane > 0 and len(sample_dic) > 2 and blankcount == 0:
+                        print('--- Calculating '+pycolor.BLUE+'mean(sample)'+pycolor.END+' - '+pycolor.BLUE+'mean(blank)'+pycolor.END+' ---')
+                        for db in list(blank_dic.keys()):
+                            text = ','.join([str(logname),str(db),str((sample_dic[db] - blank_dic[db]))])
+                            f_o.write(text+'\n')
+                            print('Sample name =',pycolor.GREEN+str(logname)+pycolor.END,'/ Element =',pycolor.GREEN+str(db)+pycolor.END,'/ Value =',pycolor.GREEN+str((sample_dic[db] - blank_dic[db]))+pycolor.END)
+                        print('--- Calculated ! -----------------------------')
+                    if lane == 0: blank_dic, sample_dic = {},{}
+                    print('Queue =',pycolor.BLUE+i.rstrip().split(',')[0]+pycolor.END,'/ Sample ID =',pycolor.BLUE+i.rstrip().split(',')[1]+pycolor.END,'/ Sample name =',pycolor.BLUE+i.rstrip().split(',')[2]+pycolor.END)
+                    lane = 0
+                    f_anl, frag = open('data/'+i.rstrip().split(',')[0]+'.txt','r').readlines(),0
+                    for line in f_anl:
+                        if 'Timestamp' in line:array = np.array(line.rstrip().split(','))
+                        if frag >= 10:array = np.vstack((array,np.array(line.rstrip().split(','))))
+                        frag += 1
+                    for j in range(len(array.T)-2):
+                        y,name = [float(k) for k in array.T[j+2][1:]],array.T[j+2][0]
+                        if not name in blank_dic.keys():
+                            blank_dic.update({name:np.mean(y[mincyc-1:maxcyc])})
+                        else:
+                            blank_dic[name] = np.mean([blank_dic[name],np.mean(y[mincyc-1:maxcyc])])
+                    lane += 1; blankcount += 1
+                if i.rstrip().split(',')[1] == 'sample':
+                    print('Queue =',pycolor.BLUE+i.rstrip().split(',')[0]+pycolor.END,'/ Sample ID =',pycolor.BLUE+i.rstrip().split(',')[1]+pycolor.END,'/ Sample name =',pycolor.BLUE+i.rstrip().split(',')[2]+pycolor.END)
+                    logname = i.rstrip().split(',')[2]
+                    f_anl, frag, blankcount = open('data/'+i.rstrip().split(',')[0]+'.txt','r').readlines(),0,0
+                    for line in f_anl:
+                        if 'Timestamp' in line:array = np.array(line.rstrip().split(','))
+                        if frag >= 10:array = np.vstack((array,np.array(line.rstrip().split(','))))
+                        frag += 1
+                    for j in range(len(array.T)-2):
+                        y,name = [float(k) for k in array.T[j+2][1:]],array.T[j+2][0]
+                        if not name in sample_dic.keys():
+                            sample_dic.update({name:np.mean(y[mincyc-1:maxcyc])})
+                        else:
+                            sample_dic[name] = np.mean([sample_dic[name],np.mean(y[mincyc-1:maxcyc])])
+                    #print(sample_dic)
         else:
             print('Please edit RunNo.csv !')
             os.system('open RunNo.csv')
@@ -175,6 +209,11 @@ class attom:
         if os.path.exists(filepath) == False:os.system('mkdir archive')
         os.system('mv *.anl archive')
         print(pycolor.REVERCE+pycolor.BLUE+analysis_file_name+pycolor.REVERCE+pycolor.END)
+
+    def target_Search(self, target):
+        filepath = os.getcwd()+'/'+target
+        if not os.path.exists(filepath): print(target,'Not found !')
+        sys.exit()
 
     def clean(self):
         os.system('rm -r data')
